@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/authenticate/login.dart';
+import 'package:iyl/screens/authenticate/otp_verification.dart';
+import 'package:iyl/screens/authenticate/register.dart';
 import 'screens/launch/splash_screen.dart';
 
 void main() {
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.black, // Dark app bar color.
         ),
       ),
-      home: const SplashScreen(),
+      home: const RegisterScreen(),
     );
   }
 }

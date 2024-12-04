@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/navigateWithFade.dart';
 import '../authenticate/register.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -38,7 +39,7 @@ class OnboardingScreen extends StatelessWidget {
               alignment: Alignment.topRight,
               child: ElevatedButton(
                 onPressed: () =>
-                    _navigateWithFade(context, const RegisterScreen()),
+                    navigateWithFade(context, const RegisterScreen()),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7),
@@ -139,7 +140,7 @@ class OnboardingScreen extends StatelessWidget {
         ),
         OutlinedButton(
           onPressed: pageIndex == 3
-              ? () => _navigateWithFade(context, const RegisterScreen())
+              ? () => navigateWithFade(context, RegisterScreen())
               : () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -156,29 +157,6 @@ class OnboardingScreen extends StatelessWidget {
           child: const Text("Next", style: TextStyle(color: Colors.white)),
         ),
       ],
-    );
-  }
-
-  void _navigateWithFade(BuildContext context, Widget screen) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => screen,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.easeInOut;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
     );
   }
 }
