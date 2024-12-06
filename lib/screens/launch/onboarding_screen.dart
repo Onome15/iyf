@@ -30,10 +30,15 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double padding = screenWidth * 0.05;
+
+    final double imageSize = screenWidth * 0.8;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+        padding: EdgeInsets.all(padding),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Align(
               alignment: Alignment.topRight,
@@ -51,47 +56,33 @@ class OnboardingScreen extends StatelessWidget {
                     const Text("Skip", style: TextStyle(color: Colors.black)),
               ),
             ),
-            const SizedBox(height: 40),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 350, // Larger image size
-                    width: 350,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.white, width: 18), // Thicker border
-                      borderRadius:
-                          BorderRadius.circular(175), // Ensures circular shape
-                      image: DecorationImage(
-                        image: AssetImage(imageUrl[pageIndex]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    headerText[pageIndex],
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30),
-                  Text(
-                    subText[pageIndex],
-                    style: const TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 40),
-                  _buildDots(context, pageIndex),
-                  const SizedBox(height: 45),
-                  _buildNavigationButtons(context, pageIndex),
-                ],
+            Container(
+              height: imageSize,
+              width: imageSize,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 18),
+                borderRadius: BorderRadius.circular(175),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl[pageIndex]),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
+            Text(
+              headerText[pageIndex],
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              subText[pageIndex],
+              style: const TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
+            ),
+            _buildDots(context, pageIndex),
+            _buildNavigationButtons(context, pageIndex),
           ],
         ),
       ),

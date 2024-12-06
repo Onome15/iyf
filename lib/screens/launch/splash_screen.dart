@@ -43,7 +43,6 @@ class SplashScreenState extends State<SplashScreen> {
               fit: BoxFit.contain, // Ensures the image maintains aspect ratio.
             ),
           ),
-          const SizedBox(height: 20),
           const Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
