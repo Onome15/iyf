@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/authenticate/shared_methods.dart';
 import 'package:iyl/screens/home/home_page.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 
@@ -218,14 +219,7 @@ class OtpVerificationPageState extends State<OtpVerificationPage> {
                     navigateWithFade(context, const HomePage());
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
+                style: buttonStyle,
                 child: const Text(
                   "Submit",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),

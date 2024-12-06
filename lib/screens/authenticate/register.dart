@@ -3,6 +3,7 @@ import 'package:iyl/screens/authenticate/login.dart';
 import 'package:iyl/screens/authenticate/otp_verification.dart';
 
 import '../../shared/navigateWithFade.dart';
+import 'shared_methods.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -83,23 +84,23 @@ class RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                _buildLabel("Full Name"),
-                _buildTextField(
+                buildLabel("Full Name"),
+                buildTextField(
                   "Full Name",
                   fullNameControllers[currentRole]!,
                   (value) =>
                       value!.isEmpty ? "Please enter your full name" : null,
                 ),
                 const SizedBox(height: 20),
-                _buildLabel("Email Address"),
-                _buildTextField(
+                buildLabel("Email Address"),
+                buildTextField(
                   "Email Address",
                   emailControllers[currentRole]!,
                   (value) => value!.isEmpty ? "Please enter your email" : null,
                 ),
                 const SizedBox(height: 20),
-                _buildLabel("Password"),
-                _buildTextField(
+                buildLabel("Password"),
+                buildTextField(
                   "Password",
                   passwordControllers[currentRole]!,
                   (value) =>
@@ -107,8 +108,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                _buildLabel("Confirm Password"),
-                _buildTextField(
+                buildLabel("Confirm Password"),
+                buildTextField(
                   "Confirm Password",
                   confirmPasswordControllers[currentRole]!,
                   (value) {
@@ -134,14 +135,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    minimumSize: const Size.fromHeight(50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
+                  style: buttonStyle,
                   child: const Text(
                     "SIGN UP",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
@@ -199,43 +193,6 @@ class RegisterScreenState extends State<RegisterScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(String hint, TextEditingController controller,
-      FormFieldValidator<String> validator,
-      {bool obscureText = false}) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      validator: validator,
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.white,
-        hintStyle: const TextStyle(color: Colors.black54),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:iyl/screens/home/home_page.dart';
 
 import '../../shared/navigateWithFade.dart';
 import 'register.dart';
+import 'shared_methods.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,15 +49,15 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  _buildLabel("Email Address"),
-                  _buildTextField(
+                  buildLabel("Email Address"),
+                  buildTextField(
                     "Email Address",
                     _emailController,
                     (value) =>
                         value!.isEmpty ? "Please enter your email" : null,
                   ),
                   const SizedBox(height: 20),
-                  _buildLabel("Password"),
+                  buildLabel("Password"),
                   _buildPasswordField(
                     "Password",
                     _passwordController,
@@ -70,14 +71,7 @@ class LoginScreenState extends State<LoginScreen> {
                         navigateWithFade(context, const HomePage());
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                    style: buttonStyle,
                     child: const Text(
                       "LOGIN",
                       style:
@@ -113,41 +107,6 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white70,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(String hint, TextEditingController controller,
-      FormFieldValidator<String> validator) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.white,
-        hintStyle: const TextStyle(color: Colors.black54),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
       ),
     );
   }
