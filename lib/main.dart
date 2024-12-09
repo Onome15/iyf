@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black, // Sets a custom dark background.
+        scaffoldBackgroundColor: Colors.black,
         primaryColor: Colors.grey[900],
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black, // Dark app bar color.
+          backgroundColor: Colors.black,
         ),
       ),
       home: const SplashScreen(),

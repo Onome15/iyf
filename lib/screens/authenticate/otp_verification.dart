@@ -4,6 +4,8 @@ import 'package:iyl/screens/authenticate/shared_methods.dart';
 import 'package:iyl/screens/home/home_page.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 
+import 'quiz.dart';
+
 class OtpVerificationPage extends StatefulWidget {
   final String email;
 
@@ -216,7 +218,7 @@ class OtpVerificationPageState extends State<OtpVerificationPage> {
                   });
 
                   if (_errorText == null) {
-                    navigateWithFade(context, const HomePage());
+                    navigateWithFade(context, const QuizScreen());
                   }
                 },
                 style: buttonStyle,
