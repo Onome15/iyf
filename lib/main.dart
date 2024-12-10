@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/home/quiz/quiz_screen.dart';
 import 'screens/launch/splash_screen.dart';
 
 void main() {

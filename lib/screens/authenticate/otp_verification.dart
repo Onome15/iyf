@@ -4,7 +4,7 @@ import 'package:iyl/screens/authenticate/shared_methods.dart';
 import 'package:iyl/screens/home/home_page.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 
-import 'quiz.dart';
+import '../home/quiz/quiz_screen.dart';
 
 class OtpVerificationPage extends StatefulWidget {
   final String email;
