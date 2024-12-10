@@ -12,6 +12,8 @@ class QuizScreen extends StatefulWidget {
 
 class QuizScreenState extends State<QuizScreen> {
   final List<Map<String, String>> _chatHistory = []; // Store chat messages
+  final ScrollController _scrollController =
+      ScrollController(); // Add ScrollController
 
   Future<void> _submitAnswers() async {
     print("Submitting answers: $_chatHistory");
@@ -26,10 +28,26 @@ class QuizScreenState extends State<QuizScreen> {
         'answer': answer,
       });
 
+      // Automatically scroll to the bottom after a new answer
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+
       if (_chatHistory.length >= quizQuestions.length) {
         _submitAnswers();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+        .dispose(); // Dispose ScrollController to prevent memory leaks
+    super.dispose();
   }
 
   @override
@@ -38,13 +56,14 @@ class QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quiz App'),
+        title: const Text('Health Based Assessment'),
       ),
       body: Column(
         children: [
           // Chat history
           Expanded(
             child: ListView.builder(
+              controller: _scrollController, // Attach ScrollController
               padding: const EdgeInsets.all(16),
               itemCount: _chatHistory.length + 1,
               itemBuilder: (context, index) {
