@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/home/home_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../provider/auth_state_provider.dart';
 import '../../shared/navigateWithFade.dart';
 import 'register.dart';
 import 'shared_methods.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({
+    super.key,
+  });
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  ConsumerState<LoginScreen> createState() => LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends ConsumerState<LoginScreen> {
+  bool isLoading = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -20,6 +26,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authNotifier = ref.read(authStateProvider.notifier);
+
     return Scaffold(
       backgroundColor: Colors.black87,
       body: Center(
@@ -66,17 +74,41 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        navigateWithFade(context, const HomePage());
+                        setState(() {
+                          isLoading = true;
+                        });
+                        try {
+                          await authNotifier.login(
+                            _emailController.text.trim(),
+                            _passwordController.text.trim(),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Login failed: $e"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } finally {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
                       }
                     },
                     style: buttonStyle,
-                    child: const Text(
-                      "LOGIN",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 3,
+                          )
+                        : const Text(
+                            "LOGIN",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w700),
+                          ),
                   ),
                   const SizedBox(height: 24),
                   Center(

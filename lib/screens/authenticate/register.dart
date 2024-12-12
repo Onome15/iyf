@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/authenticate/login.dart';
-import 'package:iyl/screens/authenticate/otp_verification.dart';
-
 import '../../shared/navigateWithFade.dart';
 import 'shared_methods.dart';
+import 'package:iyl/services/auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,6 +13,7 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterScreenState extends State<RegisterScreen> {
   bool isCoach = true;
+  bool isLoading = false;
 
   final Map<String, GlobalKey<FormState>> formKeys = {
     'Coach': GlobalKey<FormState>(),
@@ -88,23 +88,42 @@ class RegisterScreenState extends State<RegisterScreen> {
                 buildTextField(
                   "Full Name",
                   fullNameControllers[currentRole]!,
-                  (value) =>
-                      value!.isEmpty ? "Please enter your full name" : null,
+                  (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your full name";
+                    } else if (!value.contains(" ")) {
+                      return "Please enter both first and last name";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 buildLabel("Email Address"),
                 buildTextField(
                   "Email Address",
                   emailControllers[currentRole]!,
-                  (value) => value!.isEmpty ? "Please enter your email" : null,
+                  (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your email";
+                    } else if (!RegExp(r'^\S+@\S+\.\S+$').hasMatch(value)) {
+                      return "Please enter a valid email address";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
                 buildLabel("Password"),
                 buildTextField(
                   "Password",
                   passwordControllers[currentRole]!,
-                  (value) =>
-                      value!.isEmpty ? "Please enter your password" : null,
+                  (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your password";
+                    } else if (value.length < 6) {
+                      return "Password must be at least 6 characters long";
+                    }
+                    return null;
+                  },
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
@@ -125,21 +144,50 @@ class RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 40),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (formKeys[currentRole]!.currentState!.validate()) {
-                      String email =
-                          emailControllers[currentRole]?.text.trim() ?? '';
-                      navigateWithFade(
-                        context,
-                        OtpVerificationPage(email: email),
-                      );
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      String fullName = fullNameControllers[currentRole]!.text;
+                      String email = emailControllers[currentRole]!.text.trim();
+                      String password = passwordControllers[currentRole]!.text;
+                      String role = currentRole;
+
+                      try {
+                        await AuthService().registerUser(
+                          context: context,
+                          fullName: fullName,
+                          email: email,
+                          password: password,
+                          role: role,
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Registration failed: $e"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
                     }
                   },
                   style: buttonStyle,
-                  child: const Text(
-                    "SIGN UP",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                  ),
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3,
+                        )
+                      : const Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w700),
+                        ),
                 ),
                 const SizedBox(height: 24),
                 Center(
@@ -151,8 +199,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         style: TextStyle(color: Colors.white70, fontSize: 16),
                       ),
                       GestureDetector(
-                        onTap: () =>
-                            navigateWithFade(context, const LoginScreen()),
+                        onTap: () => navigateWithFade(context, LoginScreen()),
                         child: const Text(
                           "Login",
                           style: TextStyle(
