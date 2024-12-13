@@ -92,18 +92,13 @@ class AuthService {
             await prefs.setString('role', userData['role']);
             await prefs.setString('referralcode', userData['referralcode']);
             showToast(message: 'Login successful');
-          } else {
-            throw Exception('Token is null');
           }
-        } else {
-          throw Exception('Response data is empty');
         }
       } else {
-        throw Exception('Login failed: ${response.body}');
+        showToast(message: 'Error: Login failed - ${response.body}');
       }
     } catch (e) {
-      showToast(message: 'Failed to login: $e');
-      rethrow; // Pass the error for provider state update
+      showToast(message: 'Error: Failed to login - $e');
     }
   }
 
@@ -117,7 +112,14 @@ class AuthService {
   // Logout method
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); // Clears all stored data
+
+    await prefs.remove('authToken');
+    await prefs.remove('Fullname');
+    await prefs.remove('email');
+    await prefs.remove('role');
+    await prefs.remove('referralcode');
+
+    showToast(message: 'Logout successful');
   }
 
   // Change Password endpoint

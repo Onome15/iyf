@@ -16,7 +16,7 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       final prefs = await SharedPreferences.getInstance();
       final hasSeenLandingPage = prefs.getBool('hasSeenLandingPage') ?? false;
 
