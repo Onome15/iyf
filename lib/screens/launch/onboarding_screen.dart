@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/wrapper.dart';
 import '../../shared/navigateWithFade.dart';
 import '../authenticate/register.dart';
 
@@ -44,7 +45,7 @@ class OnboardingScreen extends StatelessWidget {
               alignment: Alignment.topRight,
               child: ElevatedButton(
                 onPressed: () =>
-                    navigateWithFade(context, const RegisterScreen()),
+                    navigateWithFade(context, const Wrapper(showSignIn: false)),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(7),
@@ -131,7 +132,8 @@ class OnboardingScreen extends StatelessWidget {
         ),
         OutlinedButton(
           onPressed: pageIndex == 3
-              ? () => navigateWithFade(context, RegisterScreen())
+              ? () =>
+                  navigateWithFade(context, const Wrapper(showSignIn: false))
               : () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

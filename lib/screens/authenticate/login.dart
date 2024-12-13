@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:iyl/screens/home/home_page.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../provider/auth_state_provider.dart';
-import '../../shared/navigateWithFade.dart';
-import 'register.dart';
+
 import 'shared_methods.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({
-    super.key,
-  });
+  final VoidCallback? onToggleView;
+
+  const LoginScreen({super.key, this.onToggleView});
 
   @override
   ConsumerState<LoginScreen> createState() => LoginScreenState();
@@ -120,8 +119,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           style: TextStyle(color: Colors.white70, fontSize: 16),
                         ),
                         GestureDetector(
-                          onTap: () =>
-                              navigateWithFade(context, const RegisterScreen()),
+                          onTap: widget.onToggleView,
                           child: const Text(
                             "Register",
                             style: TextStyle(

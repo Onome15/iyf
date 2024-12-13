@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/navigateWithFade.dart';
 import 'landing_page.dart';
@@ -24,7 +25,7 @@ class SplashScreenState extends State<SplashScreen> {
       } else {
         //LandingPage() will be replaced later on with an Auth() or Wrapper()
         //User go directly to the Auth page if he has seen landing before.
-        navigateWithFade(context, const LandingPage());
+        navigateWithFade(context, const Wrapper(showSignIn: true));
       }
     });
   }

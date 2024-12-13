@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:iyl/screens/authenticate/login.dart';
-import '../../shared/navigateWithFade.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'shared_methods.dart';
 import 'package:iyl/services/auth.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  final VoidCallback? onToggleView;
+
+  const RegisterScreen({super.key, this.onToggleView});
 
   @override
-  RegisterScreenState createState() => RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => RegisterScreenState();
 }
 
-class RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool isCoach = true;
   bool isLoading = false;
 
@@ -198,8 +199,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                         "Have an account already? ",
                         style: TextStyle(color: Colors.white70, fontSize: 16),
                       ),
-                      GestureDetector(
-                        onTap: () => navigateWithFade(context, LoginScreen()),
+                      TextButton(
+                        onPressed: widget.onToggleView ?? () {},
                         child: const Text(
                           "Login",
                           style: TextStyle(

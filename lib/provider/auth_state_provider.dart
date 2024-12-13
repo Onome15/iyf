@@ -22,9 +22,9 @@ class AuthStateNotifier extends StateNotifier<bool> {
   Future<void> login(String email, String password) async {
     try {
       await _authService.login(email, password);
-      state = true;
+      await _checkAuthState(); // Check token after successful login
     } catch (e) {
-      state = false;
+      state = false; // Ensure state reflects failure
       rethrow;
     }
   }

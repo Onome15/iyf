@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../screens/authenticate/login.dart';
 import '../shared/navigateWithFade.dart';
 import '../shared/toast.dart';
 
@@ -41,8 +40,11 @@ class AuthService {
       if (response.statusCode == 200) {
         showToast(message: 'Registration successful, proceed to login');
         await Future.delayed(const Duration(seconds: 2));
-
-        navigateWithFade(context, const LoginScreen());
+        navigateWithFade(
+            context,
+            const Wrapper(
+              showSignIn: true,
+            ));
       } else {
         showToast(
           message: 'Registration failed: ${response.body}',
@@ -60,11 +62,10 @@ class AuthService {
     const String endpoint = '/api/Authentication/Loginv1';
     final Uri url = Uri.parse('$baseUrl$endpoint');
 
-    // Request body
     final Map<String, dynamic> body = {
       "Email": email,
       "Password": password,
-      "OTP": "" // OTP is empty
+      "OTP": ""
     };
 
     try {
@@ -77,23 +78,32 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        showToast(message: 'Login successful');
-        final data = jsonDecode(response.body);
-        final token = data['token'];
+        final List<dynamic> responseData = jsonDecode(response.body);
 
-        // Save the token locally
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('authToken', token);
-        return token;
+        if (responseData.isNotEmpty) {
+          final Map<String, dynamic> userData = responseData[0];
+          final token = userData['token'];
+
+          if (token != null) {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('authToken', token);
+            await prefs.setString('Fullname', userData['Fullname']);
+            await prefs.setString('email', userData['email']);
+            await prefs.setString('role', userData['role']);
+            await prefs.setString('referralcode', userData['referralcode']);
+            showToast(message: 'Login successful');
+          } else {
+            throw Exception('Token is null');
+          }
+        } else {
+          throw Exception('Response data is empty');
+        }
       } else {
-        showToast(
-          message: 'Login failed: ${response.body}',
-        );
+        throw Exception('Login failed: ${response.body}');
       }
     } catch (e) {
-      showToast(
-        message: 'Failed to login: $e',
-      );
+      showToast(message: 'Failed to login: $e');
+      rethrow; // Pass the error for provider state update
     }
   }
 
@@ -107,7 +117,7 @@ class AuthService {
   // Logout method
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('authToken');
+    await prefs.clear(); // Clears all stored data
   }
 
   // Change Password endpoint

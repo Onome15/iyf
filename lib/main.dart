@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/authenticate/register.dart';
 import 'package:iyl/screens/launch/splash_screen.dart';
 
+import 'screens/authenticate/login.dart';
+
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
