@@ -1,21 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/authenticate/shared_methods.dart';
-import 'package:iyl/screens/home/home_page.dart';
-import 'package:iyl/shared/navigateWithFade.dart';
 
-import '../home/quiz/quiz_screen.dart';
+import '../../provider/auth_state_provider.dart';
+import '../../shared/toast.dart';
 
-class OtpVerificationPage extends StatefulWidget {
+class OtpVerificationPage extends ConsumerStatefulWidget {
   final String email;
+  final String password;
 
-  const OtpVerificationPage({super.key, required this.email});
+  const OtpVerificationPage(
+      {super.key, required this.email, required this.password});
 
   @override
-  OtpVerificationPageState createState() => OtpVerificationPageState();
+  ConsumerState<OtpVerificationPage> createState() =>
+      OtpVerificationPageState();
 }
 
-class OtpVerificationPageState extends State<OtpVerificationPage> {
+class OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
+  bool isLoading = false;
+
   final List<TextEditingController> _controllers =
       List.generate(6, (index) => TextEditingController());
   final _formKey = GlobalKey<FormState>();
@@ -75,6 +80,8 @@ class OtpVerificationPageState extends State<OtpVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authNotifier = ref.read(authStateProvider.notifier);
+
     return Scaffold(
       backgroundColor: Colors.black87,
       body: SingleChildScrollView(
@@ -212,20 +219,37 @@ class OtpVerificationPageState extends State<OtpVerificationPage> {
               ),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _errorText = _validateOtp();
-                  });
-
-                  if (_errorText == null) {
-                    navigateWithFade(context, const QuizScreen());
+                onPressed: () async {
+                  final otp = _controllers.map((c) => c.text).join();
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      _errorText = null;
+                      isLoading = true;
+                    });
+                    try {
+                      // Pass password along with email and OTP
+                      await authNotifier.confirmOtp(
+                          widget.email, otp, widget.password, context);
+                    } catch (e) {
+                      showToast(message: 'Error: $e');
+                    } finally {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }
                   }
                 },
                 style: buttonStyle,
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                ),
+                child: isLoading
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      )
+                    : const Text(
+                        "Submit",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
               ),
             ],
           ),

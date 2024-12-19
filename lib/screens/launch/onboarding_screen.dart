@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/wrapper.dart';
 import '../../shared/navigateWithFade.dart';
-import '../authenticate/register.dart';
 
 class OnboardingScreen extends StatelessWidget {
   final int pageIndex;

@@ -200,7 +200,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                         style: TextStyle(color: Colors.white70, fontSize: 16),
                       ),
                       TextButton(
-                        onPressed: widget.onToggleView ?? () {},
+                        onPressed: widget.onToggleView,
                         child: const Text(
                           "Login",
                           style: TextStyle(

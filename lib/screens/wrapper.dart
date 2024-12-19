@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/home/home_page.dart';
 import '../provider/auth_state_provider.dart';
 import 'authenticate/login.dart';
-import 'authenticate/registe.dart';
 import 'authenticate/register.dart';
 
 class Wrapper extends ConsumerStatefulWidget {

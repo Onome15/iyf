@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:iyl/shared/toast.dart';
 import '../../provider/auth_state_provider.dart';
-
+import '../../shared/navigateWithFade.dart';
+import 'otp_verification.dart';
 import 'shared_methods.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -68,8 +68,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   _buildPasswordField(
                     "Password",
                     _passwordController,
-                    (value) =>
-                        value!.isEmpty ? "Please enter your password" : null,
+                    (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your password";
+                      } else if (value.length < 6) {
+                        return "Password must be at least 6 characters long";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 40),
                   ElevatedButton(
@@ -79,17 +85,26 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           isLoading = true;
                         });
                         try {
-                          await authNotifier.login(
+                          final isValid =
+                              await authNotifier.validateCredentials(
                             _emailController.text.trim(),
                             _passwordController.text.trim(),
                           );
+                          if (isValid) {
+                            await authNotifier.requestOtp(
+                              _emailController.text.trim(),
+                            );
+                            // Navigate to OTP page
+                            navigateWithFade(
+                              context,
+                              OtpVerificationPage(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              ),
+                            );
+                          }
                         } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Login failed: $e"),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                          showToast(message: 'Error: $e');
                         } finally {
                           setState(() {
                             isLoading = false;

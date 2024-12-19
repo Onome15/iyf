@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/auth.dart';
 
@@ -14,21 +15,53 @@ class AuthStateNotifier extends StateNotifier<bool> {
     _checkAuthState();
   }
 
+  /// Checks if the user is logged in
   Future<void> _checkAuthState() async {
     final loggedIn = await _authService.isLoggedIn();
     state = loggedIn;
   }
 
-  Future<void> login(String email, String password) async {
+  /// Requests an OTP for the given email
+  Future<void> requestOtp(String email) async {
     try {
-      await _authService.login(email, password);
-      await _checkAuthState(); // Check token after successful login
+      await _authService.requestOtp(email);
     } catch (e) {
       state = false; // Ensure state reflects failure
       rethrow;
     }
   }
 
+  /// Validates Credentials
+  Future<bool> validateCredentials(String email, String password) async {
+    try {
+      final isValid = await _authService.validateCredentials(email, password);
+      return isValid; // Return the result of the validation
+    } catch (e) {
+      state = false; // Set the state to indicate failure
+      rethrow; // Re-throw the exception for error handling upstream
+    }
+  }
+
+  /// Confirms OTP and performs login
+  Future<void> confirmOtp(
+    String email,
+    String otp,
+    String password,
+    BuildContext context,
+  ) async {
+    try {
+      // Confirm the OTP
+      await _authService.confirmOtp(email, otp, password, context);
+
+      // After successful OTP confirmation, set state to logged in
+      state = true;
+    } catch (e) {
+      state = false; // Update state if OTP confirmation fails
+      rethrow;
+    }
+  }
+
+  /// Logs out the user
   Future<void> logout() async {
     await _authService.logout();
     state = false;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../screens/authenticate/otp_verification.dart';
 import '../shared/navigateWithFade.dart';
 import '../shared/toast.dart';
 
@@ -58,22 +59,24 @@ class AuthService {
   }
 
   // Login endpoint
-  Future<void> login(String email, String password) async {
+  Future<void> login(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     const String endpoint = '/api/Authentication/Loginv1';
     final Uri url = Uri.parse('$baseUrl$endpoint');
 
     final Map<String, dynamic> body = {
       "Email": email,
       "Password": password,
-      "OTP": ""
+      "OTP": "",
     };
 
     try {
       final response = await http.post(
         url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode(body),
       );
 
@@ -99,6 +102,84 @@ class AuthService {
       }
     } catch (e) {
       showToast(message: 'Error: Failed to login - $e');
+    }
+  }
+
+  // Validate user credentials
+  Future<bool> validateCredentials(String email, String password) async {
+    const String endpoint = '/api/Authentication/Loginv1';
+    final Uri url = Uri.parse('$baseUrl$endpoint');
+
+    final Map<String, dynamic> body = {
+      "Email": email,
+      "Password": password,
+      "OTP": "",
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        return true; // Credentials are valid
+      } else {
+        showToast(message: 'Invalid credentials: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      showToast(message: 'Error validating credentials: $e');
+      return false;
+    }
+  }
+
+  // Request OTP
+  Future<void> requestOtp(String email) async {
+    const String endpoint = '/api/Authentication/RequestOTP';
+    final Uri url = Uri.parse('$baseUrl$endpoint?form=$email');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        showToast(message: 'OTP Request Successful');
+      } else {
+        showToast(message: 'Failed to request OTP: ${response.body}');
+      }
+    } catch (e) {
+      showToast(message: 'Error: Failed to request OTP - $e');
+    }
+  }
+
+  // Confirm OTP
+  Future<void> confirmOtp(
+      String email, String otp, String password, BuildContext context) async {
+    const String endpoint = '/api/Authentication/verifyOTP';
+    final Uri url = Uri.parse('$baseUrl$endpoint?email=$email&otp=$otp');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        await login(email, password, context);
+        navigateWithFade(
+            context,
+            const Wrapper(
+              showSignIn: true,
+            ));
+      } else {
+        showToast(message: 'Failed to Verify OTP: ${response.body}');
+      }
+    } catch (e) {
+      showToast(message: 'Error: Failed to Verify OTP - $e');
     }
   }
 
