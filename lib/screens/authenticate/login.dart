@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iyl/screens/authenticate/forget_password/forget_password.dart';
 import 'package:iyl/shared/toast.dart';
 import '../../provider/auth_state_provider.dart';
 import '../../shared/navigateWithFade.dart';
@@ -65,19 +66,33 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   buildLabel("Password"),
-                  _buildPasswordField(
-                    "Password",
+                  buildPasswordField(
                     _passwordController,
-                    (value) {
-                      if (value!.isEmpty) {
-                        return "Please enter your password";
-                      } else if (value.length < 6) {
-                        return "Password must be at least 6 characters long";
-                      }
-                      return null;
+                    obscureText: _obscureText,
+                    onToggleVisibility: (isVisible) {
+                      setState(() {
+                        _obscureText = isVisible;
+                      });
                     },
                   ),
-                  const SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.red[300]),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -151,39 +166,6 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordField(String hint, TextEditingController controller,
-      FormFieldValidator<String> validator) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      obscureText: _obscureText,
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.white,
-        hintStyle: const TextStyle(color: Colors.black54),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        suffixIcon: IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility_off : Icons.visibility,
-            color: Colors.black54,
-          ),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
         ),
       ),
     );

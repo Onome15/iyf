@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../screens/authenticate/otp_verification.dart';
 import '../shared/navigateWithFade.dart';
 import '../shared/toast.dart';
 
@@ -136,7 +135,7 @@ class AuthService {
   }
 
   // Request OTP
-  Future<void> requestOtp(String email) async {
+  Future<bool> requestOtp(String email) async {
     const String endpoint = '/api/Authentication/RequestOTP';
     final Uri url = Uri.parse('$baseUrl$endpoint?form=$email');
 
@@ -147,12 +146,15 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        showToast(message: 'OTP Request Successful');
+        showToast(message: 'OTP has been sent successfully');
+        return true;
       } else {
         showToast(message: 'Failed to request OTP: ${response.body}');
+        return false;
       }
     } catch (e) {
       showToast(message: 'Error: Failed to request OTP - $e');
+      return false;
     }
   }
 
@@ -193,26 +195,24 @@ class AuthService {
   // Logout method
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-
     await prefs.remove('authToken');
     await prefs.remove('Fullname');
     await prefs.remove('email');
     await prefs.remove('role');
     await prefs.remove('referralcode');
-
     showToast(message: 'Logout successful');
   }
 
   // Change Password endpoint
-  Future<void> changePassword(String email, String newPassword) async {
+  Future<bool> changePassword(
+      String email, String newPassword, String otp) async {
     const String endpoint = '/api/Authentication/ChangePassword';
     final Uri url = Uri.parse('$baseUrl$endpoint');
 
-    // Request body
     final Map<String, dynamic> body = {
       "Email": email,
       "Password": newPassword,
-      "OTP": ""
+      "OTP": otp
     };
 
     try {
@@ -225,16 +225,15 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        showToast(message: 'Password changed successfully');
+        return true;
       } else {
-        showToast(
-          message: 'Failed to change password: ${response.body}',
-        );
+        return false;
       }
     } catch (e) {
       showToast(
         message: 'Failed to change password: $e',
       );
+      return false;
     }
   }
 }

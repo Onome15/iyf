@@ -35,10 +35,10 @@ class AuthStateNotifier extends StateNotifier<bool> {
   Future<bool> validateCredentials(String email, String password) async {
     try {
       final isValid = await _authService.validateCredentials(email, password);
-      return isValid; // Return the result of the validation
+      return isValid;
     } catch (e) {
-      state = false; // Set the state to indicate failure
-      rethrow; // Re-throw the exception for error handling upstream
+      state = false;
+      rethrow;
     }
   }
 
@@ -50,13 +50,10 @@ class AuthStateNotifier extends StateNotifier<bool> {
     BuildContext context,
   ) async {
     try {
-      // Confirm the OTP
       await _authService.confirmOtp(email, otp, password, context);
-
-      // After successful OTP confirmation, set state to logged in
       state = true;
     } catch (e) {
-      state = false; // Update state if OTP confirmation fails
+      state = false;
       rethrow;
     }
   }

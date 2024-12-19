@@ -184,7 +184,10 @@ class OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
                   ),
                   TextButton(
                     onPressed: _isResendEnabled
-                        ? () {
+                        ? () async {
+                            await authNotifier.requestOtp(
+                              widget.email,
+                            );
                             _resetTimer();
                             setState(() {
                               _resendMessage =
