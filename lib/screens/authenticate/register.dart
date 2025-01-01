@@ -92,9 +92,11 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   (value) {
                     if (value!.isEmpty) {
                       return "Please enter your full name";
-                    } else if (!value.contains(" ")) {
+                    } else if (!value.contains(" ") ||
+                        value.trim().split(" ").length < 2) {
                       return "Please enter both first and last name";
                     }
+
                     return null;
                   },
                 ),
