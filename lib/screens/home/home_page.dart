@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../provider/auth_state_provider.dart';
+import '../../shared/navigateWithFade.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -14,6 +16,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   String fullName = '';
   String email = '';
   String role = '';
+  bool onboarding = false;
   String referralCode = '';
 
   @override
@@ -28,6 +31,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       fullName = prefs.getString('Fullname') ?? 'N/A';
       email = prefs.getString('email') ?? 'N/A';
       role = prefs.getString('role') ?? 'N/A';
+      onboarding = prefs.getBool('onboarding') ?? false;
       referralCode = prefs.getString('referralcode') ?? 'N/A';
     });
   }
@@ -49,7 +53,8 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true); // Confirm
+                Navigator.of(context).pop(true);
+                navigateWithFade(context, const Wrapper(showSignIn: true));
               },
               child: const Text('Logout'),
             ),
@@ -90,6 +95,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             Text('Email: $email', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
             Text('Role: $role', style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text('onboarding: $onboarding',
+                style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 10),
             Text('Referral Code: $referralCode',
                 style: const TextStyle(fontSize: 18)),

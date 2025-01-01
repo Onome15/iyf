@@ -96,7 +96,6 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                         value.trim().split(" ").length < 2) {
                       return "Please enter both first and last name";
                     }
-
                     return null;
                   },
                 ),

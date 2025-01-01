@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/home/home_page.dart';
+import 'package:iyl/screens/home/home_wrapper.dart';
 import '../provider/auth_state_provider.dart';
 import 'authenticate/login.dart';
 import 'authenticate/register.dart';
@@ -33,7 +34,7 @@ class WrapperState extends ConsumerState<Wrapper> {
     final isLoggedIn = ref.watch(authStateProvider);
 
     if (isLoggedIn) {
-      return const HomePage();
+      return const HomeWrapper();
     } else {
       return showSignIn
           ? LoginScreen(onToggleView: toggleView)

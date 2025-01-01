@@ -92,6 +92,9 @@ class AuthService {
             await prefs.setString('Fullname', userData['Fullname']);
             await prefs.setString('email', userData['email']);
             await prefs.setString('role', userData['role']);
+            await prefs.setBool('onboarding', userData['onboarding']);
+            // await prefs.setBool('ispaid', userData['ispaid']);
+
             await prefs.setString('referralcode', userData['referralcode']);
             showToast(message: 'Login successful');
           }
