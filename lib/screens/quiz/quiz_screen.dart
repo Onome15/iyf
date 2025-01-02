@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../shared/navigateWithFade.dart';
-import '../home_page.dart';
+import '../../shared/navigateWithFade.dart';
+import '../home/home_page.dart';
 import 'quiz_questions.dart'; // Import the questions
 
 class QuizScreen extends StatefulWidget {
@@ -126,13 +126,29 @@ class QuizScreenState extends State<QuizScreen> {
               width: double.infinity,
               height: screenHeight,
               color: Colors.grey[900],
-              padding: const EdgeInsets.all(15),
+              // padding: const EdgeInsets.all(10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Icon(
+                    Icons.notifications,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   const Text(
-                    'Thank you for completing the quiz!',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "Quiz Taken Successfully!",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    'Thanks For Taking The Assessment, Please Check your email or web for quiz summary',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -143,7 +159,7 @@ class QuizScreenState extends State<QuizScreen> {
                         side: const BorderSide(color: Colors.white),
                         padding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 22),
-                        backgroundColor: const Color.fromARGB(255, 37, 67, 3),
+                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -153,7 +169,8 @@ class QuizScreenState extends State<QuizScreen> {
                       },
                       child: const Text(
                         "Continue to Home",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ))
                 ],
               ),

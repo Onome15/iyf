@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iyl/screens/home/home_page.dart';
+import 'package:iyl/screens/home/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'quiz/quiz_screen.dart';
 
 class HomeWrapper extends StatefulWidget {
@@ -37,6 +36,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
       );
     }
 
-    return onboarding! ? const HomePage() : const QuizScreen();
+    return onboarding! ? const HomeScreen() : const QuizScreen();
   }
 }

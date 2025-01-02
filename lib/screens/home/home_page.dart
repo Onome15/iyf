@@ -28,7 +28,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Future<void> _loadUserDetails() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      fullName = prefs.getString('Fullname') ?? 'N/A';
+      fullName = prefs.getString('fullName') ?? 'N/A';
       email = prefs.getString('email') ?? 'N/A';
       role = prefs.getString('role') ?? 'N/A';
       onboarding = prefs.getBool('onboarding') ?? false;
