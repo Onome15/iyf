@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iyl/screens/home/home_screen.dart';
 import '../../shared/navigateWithFade.dart';
 import '../home/home_page.dart';
 import 'quiz_questions.dart'; // Import the questions
@@ -165,7 +166,7 @@ class QuizScreenState extends State<QuizScreen> {
                         ),
                       ),
                       onPressed: () {
-                        navigateWithFade(context, const HomePage());
+                        navigateWithFade(context, const HomeScreen());
                       },
                       child: const Text(
                         "Continue to Home",
