@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +40,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
-          top: screenHeight * 0.05,
+          top: screenHeight * 0.025,
           left: screenWidth * 0.025,
           right: screenWidth * 0.025,
         ),
@@ -77,11 +78,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const Icon(Icons.notifications_active),
               ],
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenHeight * 0.01),
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: screenWidth * 0.02,
-                vertical: screenHeight * 0.025,
+                vertical: screenHeight * 0.015,
               ),
               decoration: BoxDecoration(
                 color: const Color(0xFF2E6FF3),
@@ -98,7 +99,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     "A quick summary of your progress since your last login",
                     style: TextStyle(fontSize: 12),
                   ),
-                  SizedBox(height: screenHeight * 0.015),
+                  SizedBox(height: screenHeight * 0.01),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -110,12 +111,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
+            SizedBox(height: screenHeight * 0.01),
             const Text(
               'What would you like to \n innovate Today?',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
-            SizedBox(height: screenHeight * 0.02),
+            SizedBox(height: screenHeight * 0.01),
             Column(
               children: [
                 Row(
@@ -147,7 +148,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.015),
+                SizedBox(height: screenHeight * 0.01),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -173,33 +174,89 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.015),
+                SizedBox(height: screenHeight * 0.01),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     buildGridItem(
                       icon: Icons.travel_explore,
-                      text: "Travel \n Plans",
+                      text: "Behavioural \n Insights",
                       onClick: () => print("Travel Plans clicked"),
                     ),
                     buildGridItem(
                       icon: Icons.shopping_bag,
-                      text: "Shopping \n Ideas",
+                      text: "Content \n Creation",
                       onClick: () => print("Shopping Ideas clicked"),
                     ),
                     buildGridItem(
                       icon: Icons.work,
-                      text: "Work \n Solutions",
+                      text: "Meal \n Planning",
                       onClick: () => print("Work Solutions clicked"),
                     ),
                     buildGridItem(
                       icon: Icons.group,
-                      text: "Teamwork \n Tasks",
+                      text: "User \n Notes",
+                      onClick: () => print("Teamwork Tasks clicked"),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildGridItem(
+                      icon: Icons.people,
+                      text: "Join \n Community",
+                      onClick: () => print("Travel Plans clicked"),
+                    ),
+                    buildGridItem(
+                      icon: Icons.wallet,
+                      text: "Finance \n Task",
+                      onClick: () => print("Shopping Ideas clicked"),
+                    ),
+                    buildGridItem(
+                      icon: Icons.battery_saver_sharp,
+                      text: "Health \n Task",
+                      onClick: () => print("Work Solutions clicked"),
+                    ),
+                    buildGridItem(
+                      icon: Icons.favorite,
+                      text: "Relationship \n Task",
                       onClick: () => print("Teamwork Tasks clicked"),
                     ),
                   ],
                 ),
               ],
+            ),
+            SizedBox(height: screenHeight * 0.03),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2E6FF3),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey, // Grey circular box
+                      shape: BoxShape.circle, // Makes the container circular
+                    ),
+                  ),
+                  const SizedBox(
+                      width: 12), // Spacing between the circle and text
+                  const Text(
+                    "Begin your path to a \n stronger relationship",
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic, // Italic text
+                        fontSize: 16,
+                        color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -217,7 +274,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             borderRadius: BorderRadius.circular(50),
           ),
           child: const Icon(
-            Icons.heart_broken,
+            FontAwesomeIcons.heartPulse,
             size: 18,
           ),
         ),
@@ -253,7 +310,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return GestureDetector(
       onTap: onClick,
       child: Container(
-        padding: EdgeInsets.all(screenWidth * 0.02),
+        padding: const EdgeInsets.all(10),
         height: screenHeight * 0.11,
         width: screenWidth * 0.215,
         decoration: BoxDecoration(
@@ -263,13 +320,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: screenWidth * 0.08, color: Colors.white),
+            Icon(icon, size: screenWidth * 0.06, color: Colors.white),
             SizedBox(height: screenHeight * 0.01),
             Text(
               text,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 color: Colors.white,
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/home/home_screen.dart';
 import '../../shared/navigateWithFade.dart';
-import '../home/home_page.dart';
 import 'quiz_questions.dart'; // Import the questions
 
 class QuizScreen extends StatefulWidget {
