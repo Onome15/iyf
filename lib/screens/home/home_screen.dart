@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iyl/screens/home/finance_progress.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -134,7 +135,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     buildGridItem(
                       icon: Icons.account_balance,
                       text: "Habit \n Building",
-                      onClick: () => print("Habit Building clicked"),
+                      onClick: () =>
+                          navigateWithFade(context, const FinanceProgress()),
                     ),
                     buildGridItem(
                       icon: Icons.favorite,
@@ -229,35 +231,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
             SizedBox(height: screenHeight * 0.03),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2E6FF3),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey, // Grey circular box
-                      shape: BoxShape.circle, // Makes the container circular
-                    ),
-                  ),
-                  const SizedBox(
-                      width: 12), // Spacing between the circle and text
-                  const Text(
-                    "Begin your path to a \n stronger relationship",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic, // Italic text
-                        fontSize: 16,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
