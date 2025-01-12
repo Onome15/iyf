@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iyl/screens/home/home_screen.dart';
+import 'package:iyl/screens/quiz/ai_response.dart';
+import 'package:iyl/services/ai_service.dart';
 import '../../shared/navigateWithFade.dart';
-import 'quiz_questions.dart'; // Import the questions
+import 'quiz_questions.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -11,14 +12,38 @@ class QuizScreen extends StatefulWidget {
 }
 
 class QuizScreenState extends State<QuizScreen> {
-  final List<Map<String, String>> _chatHistory = []; // Store chat messages
-  final ScrollController _scrollController =
-      ScrollController(); // Add ScrollController
+  final List<Map<String, String>> _chatHistory = [];
+  final ScrollController _scrollController = ScrollController();
+  final ChatGPTService _chatGPTService = ChatGPTService();
+  bool _isSubmitting = false;
 
   Future<void> _submitAnswers() async {
-    print("Submitting answers: $_chatHistory");
-    await Future.delayed(const Duration(seconds: 1));
-    print("Answers submitted successfully!");
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    try {
+      String response = await _chatGPTService.analyzeAnswers(_chatHistory);
+
+      navigateWithFade(
+        context,
+        AiResponse(
+          response: response,
+        ),
+      );
+    } catch (e) {
+      print("Error submitting answers: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("An error occurred: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
+    }
   }
 
   void _selectOption(String answer) {
@@ -28,7 +53,6 @@ class QuizScreenState extends State<QuizScreen> {
         'answer': answer,
       });
 
-      // Automatically scroll to the bottom after a new answer
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
@@ -36,34 +60,34 @@ class QuizScreenState extends State<QuizScreen> {
           curve: Curves.easeOut,
         );
       });
-
-      if (_chatHistory.length >= quizQuestions.length) {
-        _submitAnswers();
-      }
     });
   }
 
   @override
   void dispose() {
-    _scrollController
-        .dispose(); // Dispose ScrollController to prevent memory leaks
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenHeight = MediaQuery.of(context).size.height * 0.3;
+    double progressValue = _chatHistory.length / quizQuestions.length;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Health Based Assessment'),
+        title: const Text('Health-Based Assessment'),
       ),
       body: Column(
         children: [
-          // Chat history
+          LinearProgressIndicator(
+            value: progressValue,
+            backgroundColor: Colors.grey[300],
+            color: Colors.blue,
+          ),
           Expanded(
             child: ListView.builder(
-              controller: _scrollController, // Attach ScrollController
+              controller: _scrollController,
               padding: const EdgeInsets.all(16),
               itemCount: _chatHistory.length + 1,
               itemBuilder: (context, index) {
@@ -83,7 +107,8 @@ class QuizScreenState extends State<QuizScreen> {
                       ],
                     ),
                   );
-                } else if (_chatHistory.length < quizQuestions.length) {
+                }
+                if (_chatHistory.length < quizQuestions.length) {
                   return questionContainer(
                     quizQuestions[_chatHistory.length]['question'],
                   );
@@ -92,7 +117,6 @@ class QuizScreenState extends State<QuizScreen> {
               },
             ),
           ),
-          // Options section
           if (_chatHistory.length < quizQuestions.length)
             Container(
               width: double.infinity,
@@ -126,52 +150,54 @@ class QuizScreenState extends State<QuizScreen> {
               width: double.infinity,
               height: screenHeight,
               color: Colors.grey[900],
-              // padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.notifications,
-                    size: 30,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const Icon(Icons.check_circle, size: 50, color: Colors.green),
+                  const SizedBox(height: 15),
                   const Text(
-                    "Quiz Taken Successfully!",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'Thanks For Taking The Assessment, Please Check your email or web for quiz summary',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                    "Quiz Completed Successfully!",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(
-                    height: 15,
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Thank circular you for completing the assessment. Submit to view your results.",
+                    textAlign: TextAlign.center,
                   ),
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.white),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 22),
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _submitAnswers,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 40,
                       ),
-                      onPressed: () {
-                        navigateWithFade(context, const HomeScreen());
-                      },
-                      child: const Text(
-                        "Continue to Home",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ))
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: _isSubmitting
+                        ? const SizedBox(
+                            width: 25, // Adjust the size as needed
+                            height: 25, // Adjust the size as needed
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(Colors.white),
+                              strokeWidth:
+                                  3.0, // Slightly thinner for a better look
+                            ),
+                          )
+                        : const Text(
+                            "SUBMIT",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
                 ],
               ),
             ),
@@ -185,7 +211,7 @@ class QuizScreenState extends State<QuizScreen> {
       alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 1,
+          maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -207,23 +233,26 @@ class QuizScreenState extends State<QuizScreen> {
   }
 
   Widget answerContainer(String text) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.8,
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(50),
-            bottomLeft: Radius.circular(25),
-          ),
+    return Align(
+      alignment: Alignment.centerRight,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.8,
         ),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 16, color: Colors.black),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25),
+              topRight: Radius.circular(50),
+              bottomLeft: Radius.circular(25),
+            ),
+          ),
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+          ),
         ),
       ),
     );

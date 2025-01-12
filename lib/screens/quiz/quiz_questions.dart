@@ -52,11 +52,6 @@ final List<Map<String, dynamic>> quizQuestions = [
   },
   {
     'question':
-        " On a scale from 1-10, how would you rate the quality of your relationships with family?",
-    'options': ['1-2', '3-4', '5-6', '7-8', '9-10'],
-  },
-  {
-    'question':
         " On a scale from 1-10, how would you rate the quality of your relationships with friends? ",
     'options': ['1-2', '3-4', '5-6', '7-8', '9-10'],
   },

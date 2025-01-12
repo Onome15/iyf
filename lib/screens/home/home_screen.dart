@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:iyl/screens/home/debt_reduction.dart';
 import 'package:iyl/screens/home/finance_progress.dart';
 import 'package:iyl/shared/navigateWithFade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -125,7 +126,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     buildGridItem(
                       icon: Icons.health_and_safety,
-                      text: "AI \n Coaches",
+                      // text: "AI \n Coaches",
+                      text: "Log out",
                       onClick: () async {
                         await authNotifier.logout();
                         navigateWithFade(
@@ -141,7 +143,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     buildGridItem(
                       icon: Icons.favorite,
                       text: "Bot \n Training",
-                      onClick: () => print("Bot Training clicked"),
+                      onClick: () =>
+                          navigateWithFade(context, const DebtReduction()),
                     ),
                     buildGridItem(
                       icon: Icons.lightbulb,
@@ -231,6 +234,52 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
             SizedBox(height: screenHeight * 0.03),
+            Container(
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2E6FF3),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey, // Grey circular box
+                      shape: BoxShape.circle, // Makes the container circular
+                    ),
+                  ),
+                  const SizedBox(
+                      width: 12), // Spacing between the circle and text
+                  Row(
+                    children: [
+                      RichText(
+                        text: const TextSpan(
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Begin your path to a\nstronger ",
+                            ),
+                            TextSpan(
+                              text: "relationship",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
