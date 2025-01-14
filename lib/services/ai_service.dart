@@ -4,7 +4,7 @@ import 'dart:convert';
 class ChatGPTService {
   final String _apiUrl = "https://api.openai.com/v1/chat/completions";
   final String _apiKey =
-      "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"; // Replace with your actual API key
+      "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"; // Replace with your actual API key
 
   Future<String> analyzeAnswers(List<Map<String, String>> answers) async {
     try {
@@ -17,7 +17,7 @@ class ChatGPTService {
 
       // Prepare the API request body
       final body = jsonEncode({
-        "model": "gpt-4-turbo",
+        "model": "gpt-3.5-turbo",
         "temperature": 0.7,
         "top_p": 1.0,
         "messages": [

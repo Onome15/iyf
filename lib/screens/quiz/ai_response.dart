@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:iyl/screens/home/home_screen.dart';
 import '../../shared/navigateWithFade.dart';
-import '../home/home_screen.dart';
 
 class AiResponse extends StatefulWidget {
   final String response;

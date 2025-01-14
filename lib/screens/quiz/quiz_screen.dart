@@ -163,17 +163,14 @@ class QuizScreenState extends State<QuizScreen> {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "Thank circular you for completing the assessment. Submit to view your results.",
+                    "Thank you for completing the assessment. Submit to get an overview",
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _submitAnswers,
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 40,
-                      ),
+                      fixedSize: const Size(150, 45), // Fixed width and height
                       backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -197,7 +194,7 @@ class QuizScreenState extends State<QuizScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                  ),
+                  )
                 ],
               ),
             ),
