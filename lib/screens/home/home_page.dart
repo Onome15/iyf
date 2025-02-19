@@ -54,7 +54,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             Row(
               children: [
                 CircleAvatar(
-                  radius: screenWidth * 0.075,
+                  radius: screenWidth * 0.07,
                   backgroundColor: Colors.grey,
                   child: Icon(
                     Icons.person,
@@ -66,18 +66,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Good Evening,"),
                     Text(
-                      fullName,
+                      "Hi, $fullName",
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    const Text(
+                      "Welcome, let's innovate your life",
+                      style: TextStyle(fontSize: 10, color: Colors.grey),
                     ),
                   ],
                 ),
                 const Spacer(),
-                const Icon(Icons.mail),
+                const Icon(Icons.support_agent_outlined),
                 SizedBox(width: screenWidth * 0.025),
                 const Icon(Icons.notifications_active),
               ],
@@ -269,28 +272,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                   const SizedBox(width: 12),
                   Row(
-                    children: [
-                      RichText(
-                        text: const TextSpan(
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Begin your path to a\nstronger ",
-                            ),
-                            TextSpan(
-                              text: "relationship",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    children: [buildAnimatedRichText()],
                   ),
                 ],
               ),
@@ -444,6 +426,57 @@ class _HomePageState extends ConsumerState<HomePage> {
         accelerationCurve: Curves.linear,
         decelerationDuration: const Duration(milliseconds: 500),
         decelerationCurve: Curves.easeOut,
+      ),
+    );
+  }
+
+  Widget buildAnimatedRichText() {
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 20,
+          color: Colors.black,
+        ),
+        children: [
+          const TextSpan(
+            text: "Begin your path to a\nstronger ",
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.baseline,
+            baseline: TextBaseline.alphabetic,
+            child: AnimatedTextKit(
+              animatedTexts: [
+                FadeAnimatedText(
+                  'relationship',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+                FadeAnimatedText(
+                  'finance',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+                FadeAnimatedText(
+                  'health',
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+              repeatForever: true,
+              pause: const Duration(milliseconds: 500),
+            ),
+          ),
+        ],
       ),
     );
   }

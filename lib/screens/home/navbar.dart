@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:iyl/screens/home/profile_page.dart';
 import 'home_page.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final String? response;
+
+  const BottomNavBar({
+    super.key,
+    this.response,
+  });
 
   @override
   BottomNavBarState createState() => BottomNavBarState();
@@ -12,13 +17,19 @@ class BottomNavBar extends StatefulWidget {
 class BottomNavBarState extends State<BottomNavBar> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const CoachPage(),
-    const CommunityPage(),
-    const EarningsPage(),
-    const ProfileScreen(),
-  ];
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const HomePage(),
+      const CoachPage(),
+      const CommunityPage(),
+      const EarningsPage(),
+      ProfilePage(response: widget.response),
+    ];
+  }
 
   void _onTabTapped(int index) {
     setState(() {
@@ -96,18 +107,6 @@ class EarningsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Earnings')),
       body: const Center(child: Text('Earnings Page Content')),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const Center(child: Text('Profile Page Content')),
     );
   }
 }

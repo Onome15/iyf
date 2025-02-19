@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:iyl/screens/home/home_page.dart';
+import 'package:iyl/screens/home/navbar.dart';
 import '../../shared/methods.dart';
 
 class AiResponse extends StatefulWidget {
@@ -82,14 +83,15 @@ class AiResponseState extends State<AiResponse> {
             icon: const Icon(Icons.home),
             onPressed: isTypingComplete
                 ? () {
-                    pushNavigateWithFade(context, const HomePage());
+                    pushNavigateWithFade(
+                        context, BottomNavBar(response: widget.response));
                   }
-                : null, // Disable until typing is complete
+                : null,
           ),
         ],
       ),
       body: SingleChildScrollView(
-        controller: _scrollController, // Attach ScrollController
+        controller: _scrollController,
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

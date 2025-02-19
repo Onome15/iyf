@@ -21,6 +21,6 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.black,
           ),
         ),
-        home: const BottomNavBar());
+        home: const SplashScreen());
   }
 }
