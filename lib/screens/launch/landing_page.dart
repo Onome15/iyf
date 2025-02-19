@@ -10,7 +10,7 @@ class LandingPage extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hasSeenLandingPage', true);
 
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => destination,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

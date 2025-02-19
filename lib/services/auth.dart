@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../shared/navigateWithFade.dart';
-import '../shared/toast.dart';
+import '../shared/methods.dart';
 
 class AuthService {
   // Base URL of the API
@@ -40,7 +39,7 @@ class AuthService {
       if (response.statusCode == 200) {
         showToast(message: 'Registration successful, proceed to login');
         await Future.delayed(const Duration(seconds: 2));
-        navigateWithFade(
+        pushNavigateWithFade(
             context,
             const Wrapper(
               showSignIn: true,
@@ -175,7 +174,7 @@ class AuthService {
 
       if (response.statusCode == 200) {
         await login(email, password, context);
-        navigateWithFade(
+        replaceNavigateWithFade(
             context,
             const Wrapper(
               showSignIn: true,

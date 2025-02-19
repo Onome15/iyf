@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/auth.dart';
-import '../../../shared/navigateWithFade.dart';
-import '../../../shared/toast.dart';
+import '../../../shared/methods.dart';
 import '../shared_methods.dart';
 import 'reset_password.dart';
 
@@ -73,7 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         final success = await AuthService()
                             .requestOtp(_emailController.text.trim());
                         if (success) {
-                          navigateWithFade(
+                          pushNavigateWithFade(
                             context,
                             ResetPasswordScreen(
                               email: _emailController.text.trim(),

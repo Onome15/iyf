@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/quiz/ai_response.dart';
 import 'package:iyl/services/ai_service.dart';
-import '../../shared/navigateWithFade.dart';
+import '../../shared/methods.dart';
 import 'quiz_questions.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class QuizScreenState extends State<QuizScreen> {
     try {
       String response = await _chatGPTService.analyzeAnswers(_chatHistory);
 
-      navigateWithFade(
+      replaceNavigateWithFade(
         context,
         AiResponse(
           response: response,

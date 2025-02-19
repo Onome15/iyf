@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iyl/screens/home/navbar.dart';
 import 'package:iyl/screens/launch/splash_screen.dart';
 
 void main() {
@@ -20,6 +21,6 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.black,
           ),
         ),
-        home: const SplashScreen());
+        home: const BottomNavBar());
   }
 }

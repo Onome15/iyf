@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/authenticate/forget_password/forget_password.dart';
-import 'package:iyl/shared/toast.dart';
 import '../../provider/auth_state_provider.dart';
-import '../../shared/navigateWithFade.dart';
+import '../../shared/methods.dart';
 import 'otp_verification.dart';
 import 'shared_methods.dart';
 
@@ -110,7 +109,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                               _emailController.text.trim(),
                             );
                             // Navigate to OTP page
-                            navigateWithFade(
+                            pushNavigateWithFade(
                               context,
                               OtpVerificationPage(
                                 email: _emailController.text.trim(),

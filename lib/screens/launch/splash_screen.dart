@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iyl/screens/wrapper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../shared/navigateWithFade.dart';
+import '../../shared/methods.dart';
 import 'landing_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,11 +21,11 @@ class SplashScreenState extends State<SplashScreen> {
       final hasSeenLandingPage = prefs.getBool('hasSeenLandingPage') ?? false;
 
       if (!hasSeenLandingPage) {
-        navigateWithFade(context, const LandingPage());
+        replaceNavigateWithFade(context, const LandingPage());
       } else {
         //LandingPage() will be replaced later on with an Auth() or Wrapper()
         //User go directly to the Auth page if he has seen landing before.
-        navigateWithFade(context, const Wrapper(showSignIn: true));
+        replaceNavigateWithFade(context, const Wrapper(showSignIn: true));
       }
     });
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iyl/screens/home/home_screen.dart';
+import 'package:iyl/screens/home/home_page.dart';
+import 'package:iyl/screens/home/navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'quiz/quiz_screen.dart';
 
@@ -36,6 +37,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
       );
     }
 
-    return onboarding! ? const HomeScreen() : const QuizScreen();
+    return onboarding! ? const BottomNavBar() : const QuizScreen();
   }
 }

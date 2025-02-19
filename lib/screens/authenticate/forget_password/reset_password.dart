@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/auth.dart';
-import '../../../shared/navigateWithFade.dart';
-import '../../../shared/toast.dart';
+import '../../../shared/methods.dart';
 import '../../wrapper.dart';
 import '../shared_methods.dart';
 
@@ -94,7 +93,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               message:
                                   'Password changed successfully, proceed to login');
                           Future.delayed(const Duration(seconds: 2), () {
-                            navigateWithFade(
+                            pushNavigateWithFade(
                               context,
                               const Wrapper(
                                 showSignIn: true,

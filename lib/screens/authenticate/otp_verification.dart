@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iyl/screens/authenticate/shared_methods.dart';
 
 import '../../provider/auth_state_provider.dart';
-import '../../shared/toast.dart';
+import '../../shared/methods.dart';
 
 class OtpVerificationPage extends ConsumerStatefulWidget {
   final String email;
